@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Material Atlas</title>
+    <meta name="description"
+        content="The Material Atlas — Navigate the materials landscape. A curated digital monograph of the most important fundamental materials.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Manrope:wght@300;500;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./src/styles/index.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="digital-census-bg" id="census-bg"></div>
+
+        <header class="hero">
+            <nav>
+                <div class="logo">MATERIAL ATLAS</div>
+                <div class="nav-links">
+                    <div class="search-wrapper">
+                        <input type="text" id="material-search" placeholder="Search Materials...">
+                    </div>
+                    <a href="#library">Library</a>
+                    <a href="#" id="open-author">Author</a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Skip Button -->
+        <button class="skip-btn" id="skip-to-archive">Skip to Archive ↓</button>
+
+        <main id="view-home">
+            <!-- Scrollytelling Tutorial (Hero → Search → Card + Properties) -->
+            <div class="tutorial-wrapper" id="tutorial-trigger">
+                <div class="tutorial-sticky">
+                    <!-- Narrative is handled by step-monograph and kinetic reveal -->
+
+                    <!-- Phase 0: Brand Hero -->
+                    <div class="step step-hero" id="step-0" style="opacity: 1;">
+                        <div class="hero-text-group">
+                            <h1 class="serif-title tutorial-hero-title">The Material<br>Atlas</h1>
+                            <p class="hero-subtitle">Navigate the Materials Landscape</p>
+                        </div>
+                    </div>
+
+                    <!-- Phase 0.5: Project Monograph -->
+                    <div class="step step-monograph" id="step-0-5">
+                        <div class="monograph-reveal-box">
+                            <span class="mono-line">Welcome to your guide to materials science.</span>
+                            <span class="mono-line">Learn how we use different atoms and</span>
+                            <span class="mono-line">structures to create everything from</span>
+                            <span class="mono-line">medicine to spaceships.</span>
+                        </div>
+                    </div>
+                    <!-- Phase 1: Search Origin -->
+                    <div class="step step-search" id="step-1">
+                        <div class="sim-search-box">
+                            <span class="type-target-tutorial">Search Materials_</span>
+                        </div>
+                    </div>
+
+                    <!-- Phase 2: Graphene Card + Property Orbit -->
+                    <div class="step step-card" id="step-2">
+                        <div class="tutorial-card-manifest">
+                            <div class="nitinol-lattice-bg" id="lattice-anim-target"
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.15; pointer-events: none;">
+                                <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                    <pattern id="square-pattern" width="20" height="20" patternUnits="userSpaceOnUse">
+                                        <rect width="20" height="20" fill="none" stroke="var(--accent-blue)"
+                                            stroke-width="0.1" />
+                                        <circle cx="0" cy="0" r="0.5" fill="var(--accent-blue)" />
+                                    </pattern>
+                                    <rect width="100" height="100" fill="url(#square-pattern)" />
+                                </svg>
+                            </div>
+
+                            <div class="tutorial-card-inner">
+                                <div class="tutorial-card-wing left">
+                                    <span class="wing-label">TRANSFORMATION</span>
+                                    <div class="wing-data">Range: -20 to 110°C<br>Phase: Austenitic<br>Comp: 50/50 Ni-Ti
+                                    </div>
+                                </div>
+                                <div class="tutorial-card-center">
+                                    <h2 class="serif-title tutorial-title">Nitinol</h2>
+                                    <div class="divider"></div>
+                                    <p class="tutorial-desc">A nickel-titanium alloy that "remembers" its original
+                                        shape. By transitioning between Martensitic and Austenitic phases, it converts
+                                        thermal energy into mechanical motion.</p>
+                                </div>
+                                <div class="tutorial-card-wing right">
+                                    <span class="wing-label">MECHANICAL</span>
+                                    <div class="wing-data">Recovery: 8% Strain<br>Modulus: 75 GPa<br>Status: Memory Lock
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 3: Property Reveal -->
+                    <div class="step step-properties" id="step-3">
+                        <div class="prop-orbit">
+                            <div class="orbit-item" style="--angle: 0deg">
+                                <strong>Form: Shape Memory</strong>
+                                <span class="prop-desc">Atomic lattice realignment</span>
+                            </div>
+                            <div class="orbit-item" style="--angle: 72deg">
+                                <strong>Elasticity: 8%</strong>
+                                <span class="prop-desc">Superelastic recovery threshold</span>
+                            </div>
+                            <div class="orbit-item" style="--angle: 144deg">
+                                <strong>Use: Biomedical</strong>
+                                <span class="prop-desc">Stents and orthodontic wires</span>
+                            </div>
+                            <div class="orbit-item" style="--angle: 216deg">
+                                <strong>Biocompat: High</strong>
+                                <span class="prop-desc">Immune system compatibility</span>
+                            </div>
+                            <div class="orbit-item" style="--angle: 288deg">
+                                <strong>Status: Industrial</strong>
+                                <span class="prop-desc">Widely deployed in robotics</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Library View -->
+            <section id="library">
+                <span class="section-meta">Archive Access</span>
+                <h2 class="serif-text" style="text-align: center; margin-bottom: 3rem;">Material Explorer.</h2>
+
+                <div class="filter-bar">
+                    <button class="filter-btn active" data-filter="all">All Materials</button>
+                    <button class="filter-btn" data-filter="metal">Metals</button>
+                    <button class="filter-btn" data-filter="polymer">Polymers</button>
+                    <button class="filter-btn" data-filter="ceramic">Ceramics</button>
+                    <button class="filter-btn" data-filter="composite">Composites</button>
+                    <button class="filter-btn" data-filter="frontier">Frontier</button>
+                </div>
+
+                <div class="materials-grid" id="materials-grid">
+                    <!-- Materials will be injected here -->
+                </div>
+            </section>
+
+            <!-- Deep Extraction Lab (Standalone, Interactive) -->
+
+            <section id="page-detail" class="closed">
+                <button class="back-btn">← Back to Home</button>
+                <div id="detail-content"></div>
+            </section>
+        </main>
+        <!-- Author Slide-Panel -->
+        <div class="author-panel" id="author-modal">
+            <div class="panel-content">
+                <button class="close-panel" id="close-author">&times;</button>
+                
+                <div class="panel-header">
+                    <span class="panel-meta">Curator Profile</span>
+                    <h2 class="serif-title">About the Project</h2>
+                </div>
+
+                <div class="panel-body">
+                    <p class="casual-statement">
+                        I'm a Leeds MSc Materials Science and Engineering graduate. My research project focused on 'Optimizing physicochemical properties of APIs,' where I used characterization techniques like XRD and Raman spectroscopy for the structural and surface analysis of crystals. 
+                    </p>
+                    <p class="casual-statement">
+                        This website is my first real attempt at building a project while learning my way around AI.
+                    </p>
+                </div>
+
+                <div class="panel-footer">
+                    <span class="footer-label">Technical Proficiencies</span>
+                    <div class="mini-tags">
+                        <span>XRD & Raman</span>
+                        <span>Optical Microscopy</span>
+                        <span>Data Automation</span>
+                        <span>Python/VBA</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-overlay" id="author-overlay"></div>
+    </div>
+
+    <script type="module" src="./src/data/materials.js"></script>
+    <script type="module" src="./src/main.js"></script>
+</body>
+
+</html>
