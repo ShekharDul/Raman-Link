@@ -1,4 +1,4 @@
-window.MaterialsDatabase = [
+export const MaterialsDatabase = [
     {
         id: 'graphene',
         name: 'Graphene',
@@ -19,7 +19,25 @@ window.MaterialsDatabase = [
             "Electronics": "High-frequency transistors."
         },
         vulnerabilities: "Extremely difficult to manufacture at scale. 'Zero bandgap' makes it hard to use in digital logic.",
-        future_potential: "Space elevator tethers and 100% efficient desalination."
+        future_potential: "Space elevator tethers and 100% efficient desalination.",
+        dimensions: 2,
+        spaceGroup: 'P6/mmm',
+        crystalSystem: 'Hexagonal',
+        renderMode: 'lattice',
+        latticeType: 'hexagonal',
+        blueprint: {
+            atoms: [
+                { type: 'C', pos: [0,0,0], color: '#00f2ff', size: 4 },
+                { type: 'C', pos: [14.2, 8.2, 0], color: '#00f2ff', size: 4 },
+                { type: 'C', pos: [14.2, 24.6, 0], color: '#00f2ff', size: 4 },
+                { type: 'C', pos: [0, 32.8, 0], color: '#00f2ff', size: 4 },
+                { type: 'C', pos: [-14.2, 24.6, 0], color: '#00f2ff', size: 4 },
+                { type: 'C', pos: [-14.2, 8.2, 0], color: '#00f2ff', size: 4 }
+            ],
+            bonds: [[0,1], [1,2], [2,3], [3,4], [4,5], [5,0]]
+        },
+        latticeParams: { a: 2.46, b: 2.46, c: 3.35 }, // c-axis is interlayer spacing in graphite
+        palette: { primary: '#00f2ff', secondary: '#006677', accent: '#ffffff' }
     },
     {
         id: 'titanium',
@@ -41,7 +59,27 @@ window.MaterialsDatabase = [
             "Industrial": "Desalination plants."
         },
         vulnerabilities: "Severe oxygen embrittlement above 400°C. Difficult to machine due to galling.",
-        future_potential: "3D printing complex aerospace geometries to eliminate waste."
+        future_potential: "3D printing complex aerospace geometries to eliminate waste.",
+        dimensions: 3,
+        spaceGroup: 'Fm-3m', // Simplified for demo (Beta-Titanium phase)
+        crystalSystem: 'Cubic (simplified)',
+        symbol: 'Ti',
+        renderMode: 'lattice',
+        latticeType: 'fcc',
+        blueprint: {
+            atoms: [
+                { type: 'Ti', pos: [-25,-25,-25], color: '#a8a8a8', size: 6 }, { type: 'Ti', pos: [25,-25,-25], color: '#a8a8a8', size: 6 },
+                { type: 'Ti', pos: [25,25,-25], color: '#a8a8a8', size: 6 }, { type: 'Ti', pos: [-25,25,-25], color: '#a8a8a8', size: 6 },
+                { type: 'Ti', pos: [-25,-25,25], color: '#a8a8a8', size: 6 }, { type: 'Ti', pos: [25,-25,25], color: '#a8a8a8', size: 6 },
+                { type: 'Ti', pos: [25,25,25], color: '#a8a8a8', size: 6 }, { type: 'Ti', pos: [-25,25,25], color: '#a8a8a8', size: 6 },
+                { type: 'Ti', pos: [0,-25,0], color: '#a8a8a8', size: 6 }, { type: 'Ti', pos: [0,25,0], color: '#a8a8a8', size: 6 },
+                { type: 'Ti', pos: [-25,0,0], color: '#a8a8a8', size: 6 }, { type: 'Ti', pos: [25,0,0], color: '#a8a8a8', size: 6 },
+                { type: 'Ti', pos: [0,0,-25], color: '#a8a8a8', size: 6 }, { type: 'Ti', pos: [0,0,25], color: '#a8a8a8', size: 6 }
+            ],
+            bonds: [[0,8], [8,1], [1,11], [11,2], [2,9], [9,3], [3,10], [10,0], [4,8], [8,5], [5,11], [11,6], [6,9], [9,7], [7,10], [10,4]]
+        },
+        latticeParams: { a: 2.95, b: 2.95, c: 4.68 },
+        palette: { primary: '#a8a8a8', secondary: '#444444', accent: '#00f2ff' }
     },
     {
         id: 'aerogel',
@@ -63,7 +101,19 @@ window.MaterialsDatabase = [
             "Commercial": "High-end winter apparel."
         },
         vulnerabilities: "Extremely brittle; shatters like glass under light impacts.",
-        future_potential: "Graphene-based aerogels for flexible electronics."
+        future_potential: "Graphene-based aerogels for flexible electronics.",
+        renderMode: 'network',
+        blueprint: {
+            atoms: [
+                { type: 'Si', pos: [0,0,0], color: '#e0f7fa', size: 4 },
+                { type: 'O', pos: [15,10,-5], color: '#ffffff', size: 2.5 },
+                { type: 'Si', pos: [25,25,10], color: '#e0f7fa', size: 4 },
+                { type: 'Si', pos: [-20,30,0], color: '#e0f7fa', size: 4 },
+                { type: 'O', pos: [-5,15,5], color: '#ffffff', size: 2.5 }
+            ],
+            bonds: [[0,1], [1,2], [0,4], [4,3]]
+        },
+        palette: { primary: '#e0f7fa', secondary: '#006064', accent: '#ffffff' }
     },
     {
         id: 'carbon-fiber',
@@ -107,7 +157,25 @@ window.MaterialsDatabase = [
             "Industrial": "High-speed cutting tools."
         },
         vulnerabilities: "Extremely heavy; useless for aerospace structures. Brittle at room temperature.",
-        future_potential: "Critical for the development of nuclear fusion reactors."
+        future_potential: "Critical for the development of nuclear fusion reactors.",
+        dimensions: 3,
+        spaceGroup: 'Im-3m',
+        crystalSystem: 'Cubic',
+        symbol: 'W',
+        renderMode: 'lattice',
+        latticeType: 'bcc',
+        blueprint: {
+            atoms: [
+                { type: 'W', pos: [-25,-25,-25], color: '#778899', size: 7 }, { type: 'W', pos: [25,-25,-25], color: '#778899', size: 7 },
+                { type: 'W', pos: [25,25,-25], color: '#778899', size: 7 }, { type: 'W', pos: [-25,25,-25], color: '#778899', size: 7 },
+                { type: 'W', pos: [-25,-25,25], color: '#778899', size: 7 }, { type: 'W', pos: [25,-25,25], color: '#778899', size: 7 },
+                { type: 'W', pos: [25,25,25], color: '#778899', size: 7 }, { type: 'W', pos: [-25,25,25], color: '#778899', size: 7 },
+                { type: 'W', pos: [0,0,0], color: '#778899', size: 7 }
+            ],
+            bonds: [[0,8], [1,8], [2,8], [3,8], [4,8], [5,8], [6,8], [7,8]]
+        },
+        latticeParams: { a: 3.16, b: 3.16, c: 3.16 },
+        palette: { primary: '#778899', secondary: '#2f4f4f', accent: '#ffa500' }
     },
     {
         id: 'nitinol',
@@ -129,7 +197,22 @@ window.MaterialsDatabase = [
             "Aerospace": "Deployable solar panels."
         },
         vulnerabilities: "Difficult to weld or machine. Fatigue life is unpredictable under high stress cycles.",
-        future_potential: "Solid-state heat engines generating electricity from waste heat."
+        future_potential: "Solid-state heat engines generating electricity from waste heat.",
+        symbol: 'NiTi',
+        renderMode: 'lattice',
+        latticeType: 'bcc',
+        blueprint: {
+            atoms: [
+                { type: 'Ni', pos: [-25,-25,-25], color: '#ff00ff', size: 6 }, { type: 'Ni', pos: [25,-25,-25], color: '#ff00ff', size: 6 },
+                { type: 'Ni', pos: [25,25,-25], color: '#ff00ff', size: 6 }, { type: 'Ni', pos: [-25,25,-25], color: '#ff00ff', size: 6 },
+                { type: 'Ni', pos: [-25,-25,25], color: '#ff00ff', size: 6 }, { type: 'Ni', pos: [25,-25,25], color: '#ff00ff', size: 6 },
+                { type: 'Ni', pos: [25,25,25], color: '#ff00ff', size: 6 }, { type: 'Ni', pos: [-25,25,25], color: '#ff00ff', size: 6 },
+                { type: 'Ti', pos: [0,0,0], color: '#00f2ff', size: 8 }
+            ],
+            bonds: [[0,8], [1,8], [2,8], [3,8], [4,8], [5,8], [6,8], [7,8]]
+        },
+        latticeParams: { a: 3.01, b: 3.01, c: 3.01 },
+        palette: { primary: '#ff00ff', secondary: '#440044', accent: '#00f2ff' }
     },
     {
         id: 'alumina',
@@ -151,7 +234,20 @@ window.MaterialsDatabase = [
             "Medical": "Bearing surfaces in hip replacements."
         },
         vulnerabilities: "Highly brittle and susceptible to thermal shock; shatters if cooled too quickly.",
-        future_potential: "Transparent alumina for unbreakable smartphone screens."
+        future_potential: "Transparent alumina for unbreakable smartphone screens.",
+        symbol: 'Al2O3',
+        renderMode: 'network',
+        blueprint: {
+            atoms: [
+                { type: 'Al', pos: [0,0,0], color: '#f5f5f5', size: 6 },
+                { type: 'Al', pos: [0,40,0], color: '#f5f5f5', size: 6 },
+                { type: 'O', pos: [20,20,15], color: '#ff5252', size: 4 },
+                { type: 'O', pos: [-20,20,-15], color: '#ff5252', size: 4 },
+                { type: 'O', pos: [0,20,-25], color: '#ff5252', size: 4 }
+            ],
+            bonds: [[0,2], [0,3], [0,4], [1,2], [1,3], [1,4]]
+        },
+        palette: { primary: '#ffffff', secondary: '#b71c1c', accent: '#ff5252' }
     },
     {
         id: 'peek',
@@ -167,13 +263,18 @@ window.MaterialsDatabase = [
             magnetic: { "Type": "Non-magnetic" }
         },
         synthesis: "Step-growth polymerization of bisphenolate salts.",
-        applications: {
-            "Medical": "Spinal fusion cages.",
-            "Aerospace": "Replacing metal engine parts.",
-            "Industrial": "High-pressure pump gears."
+        symbol: 'PEEK',
+        renderMode: 'polymer',
+        blueprint: {
+            atoms: [
+                { type: 'C', pos: [-30,0,0], color: '#f4a460', size: 5 },
+                { type: 'C', pos: [-15,15,0], color: '#f4a460', size: 5 },
+                { type: 'O', pos: [0,0,0], color: '#ff5252', size: 4 },
+                { type: 'C', pos: [15,15,0], color: '#f4a460', size: 5 }
+            ],
+            bonds: [[0,1], [1,2], [2,3]]
         },
-        vulnerabilities: "Extremely high cost; requires specialized equipment for high-temp processing.",
-        future_potential: "3D printing of aerospace-grade components in orbit."
+        palette: { primary: '#f4a460', secondary: '#8b4513', accent: '#ff5252' }
     },
     {
         id: 'silicon',
@@ -195,7 +296,26 @@ window.MaterialsDatabase = [
             "Photonics": "Fiber-optic communication lasers."
         },
         vulnerabilities: "Extremely brittle; computing limits are being reached due to quantum tunneling.",
-        future_potential: "Silicon Photonics: replacing copper wires with microscopic lasers."
+        future_potential: "Silicon Photonics: replacing copper wires with microscopic lasers.",
+        dimensions: 3,
+        spaceGroup: 'Fd-3m',
+        crystalSystem: 'Cubic',
+        symbol: 'Si',
+        renderMode: 'lattice',
+        latticeType: 'diamond',
+        blueprint: {
+            atoms: [
+                { type: 'Si', pos: [-25,-25,-25], color: '#1e88e5', size: 6 }, { type: 'Si', pos: [25,-25,-25], color: '#1e88e5', size: 6 },
+                { type: 'Si', pos: [25,25,-25], color: '#1e88e5', size: 6 }, { type: 'Si', pos: [-25,25,-25], color: '#1e88e5', size: 6 },
+                { type: 'Si', pos: [-25,-25,25], color: '#1e88e5', size: 6 }, { type: 'Si', pos: [25,-25,25], color: '#1e88e5', size: 6 },
+                { type: 'Si', pos: [25,25,25], color: '#1e88e5', size: 6 }, { type: 'Si', pos: [-25,25,25], color: '#1e88e5', size: 6 },
+                { type: 'Si', pos: [0, -12, 0], color: '#1e88e5', size: 6 }, { type: 'Si', pos: [0, 12, 0], color: '#1e88e5', size: 6 },
+                { type: 'Si', pos: [-12.5, 12.5, 12.5], color: '#1e88e5', size: 6 }, { type: 'Si', pos: [12.5, -12.5, 12.5], color: '#1e88e5', size: 6 }
+            ],
+            bonds: [[0,8], [1,11], [4,8], [5,11], [8,9], [9,10], [2,9], [3,10], [6,9], [7,10]]
+        },
+        latticeParams: { a: 5.43, b: 5.43, c: 5.43 },
+        palette: { primary: '#1e88e5', secondary: '#0d47a1', accent: '#ffffff' }
     },
     {
         id: 'kevlar',
@@ -216,8 +336,17 @@ window.MaterialsDatabase = [
             "Aerospace": "Jet engine containment rings.",
             "Industrial": "Cut-resistant gloves."
         },
-        vulnerabilities: "Vulnerable to UV light and moisture absorption.",
-        future_potential: "Hybrid Kevlar-Spider Silk for ultra-light armor."
+        symbol: 'Kevlar',
+        renderMode: 'polymer',
+        blueprint: {
+            atoms: [
+                { type: 'C', pos: [-30,0,0], color: '#fdd835', size: 5 }, { type: 'C', pos: [-15,15,0], color: '#fdd835', size: 5 },
+                { type: 'C', pos: [15,15,0], color: '#fdd835', size: 5 }, { type: 'C', pos: [30,0,0], color: '#fdd835', size: 5 },
+                { type: 'N', pos: [45,-15,0], color: '#1e88e5', size: 5 }, { type: 'H', pos: [45,-30,0], color: '#ffffff', size: 3 }
+            ],
+            bonds: [[0,1], [1,2], [2,3], [3,4], [4,5]]
+        },
+        palette: { primary: '#fbc02d', secondary: '#f57f17', accent: '#ffffff' }
     },
     {
         id: 'copper',
@@ -239,7 +368,27 @@ window.MaterialsDatabase = [
             "Architecture": "Corrosion-resistant roofing."
         },
         vulnerabilities: "Soft and heavy. Highly susceptible to theft for scrap value.",
-        future_potential: "Critical for the green energy transition."
+        future_potential: "Critical for the green energy transition.",
+        dimensions: 3,
+        spaceGroup: 'Fm-3m',
+        crystalSystem: 'Cubic',
+        symbol: 'Cu',
+        renderMode: 'lattice',
+        latticeType: 'fcc',
+        blueprint: {
+            atoms: [
+                { type: 'Cu', pos: [-25,-25,-25], color: '#ff8c00', size: 6 }, { type: 'Cu', pos: [25,-25,-25], color: '#ff8c00', size: 6 },
+                { type: 'Cu', pos: [25,25,-25], color: '#ff8c00', size: 6 }, { type: 'Cu', pos: [-25,25,-25], color: '#ff8c00', size: 6 },
+                { type: 'Cu', pos: [-25,-25,25], color: '#ff8c00', size: 6 }, { type: 'Cu', pos: [25,-25,25], color: '#ff8c00', size: 6 },
+                { type: 'Cu', pos: [25,25,25], color: '#ff8c00', size: 6 }, { type: 'Cu', pos: [-25,25,25], color: '#ff8c00', size: 6 },
+                { type: 'Cu', pos: [0,-25,0], color: '#ff8c00', size: 6 }, { type: 'Cu', pos: [0,25,0], color: '#ff8c00', size: 6 },
+                { type: 'Cu', pos: [-25,0,0], color: '#ff8c00', size: 6 }, { type: 'Cu', pos: [25,0,0], color: '#ff8c00', size: 6 },
+                { type: 'Cu', pos: [0,0,-25], color: '#ff8c00', size: 6 }, { type: 'Cu', pos: [0,0,25], color: '#ff8c00', size: 6 }
+            ],
+            bonds: [[0,8], [8,1], [1,11], [11,2], [2,9], [9,3], [3,10], [10,0], [4,8], [8,5], [5,11], [11,6], [6,9], [9,7], [7,10], [10,4]]
+        },
+        latticeParams: { a: 3.61, b: 3.61, c: 3.61 },
+        palette: { primary: '#ff8c00', secondary: '#8b4513', accent: '#ffffff' }
     },
     {
         id: 'glass',
@@ -260,8 +409,19 @@ window.MaterialsDatabase = [
             "Technology": "Fiber-optic cables.",
             "Science": "Microscope lenses."
         },
-        vulnerabilities: "Catastrophically brittle; microscopic scratches cause failure.",
-        future_potential: "Smart glass that changes opacity to regulate temperature."
+        symbol: 'SiO2',
+        renderMode: 'network',
+        blueprint: {
+            atoms: [
+                { type: 'Si', pos: [0,0,0], color: '#ffffff', size: 6 },
+                { type: 'O', pos: [15,15,15], color: '#00f2ff', size: 4 },
+                { type: 'O', pos: [-15,15,-15], color: '#00f2ff', size: 4 },
+                { type: 'O', pos: [15,-15,-15], color: '#00f2ff', size: 4 },
+                { type: 'O', pos: [-15,-15,15], color: '#00f2ff', size: 4 }
+            ],
+            bonds: [[0,1], [0,2], [0,3], [0,4]]
+        },
+        palette: { primary: '#ffffff', secondary: '#cccccc', accent: '#00f2ff' }
     },
     {
         id: 'steel',
@@ -283,7 +443,26 @@ window.MaterialsDatabase = [
             "Industrial": "Pipelines and heavy tooling."
         },
         vulnerabilities: "Standard steel rusts rapidly in water and oxygen.",
-        future_potential: "H2-Green Steel using hydrogen to eliminate CO2."
+        future_potential: "H2-Green Steel using hydrogen to eliminate CO2.",
+        dimensions: 3,
+        spaceGroup: 'Im-3m', // Ferrite phase
+        crystalSystem: 'Cubic',
+        symbol: 'Fe-C',
+        renderMode: 'lattice',
+        latticeType: 'bcc',
+        blueprint: {
+            atoms: [
+                { type: 'Fe', pos: [-25,-25,-25], color: '#78909c', size: 6 }, { type: 'Fe', pos: [25,-25,-25], color: '#78909c', size: 6 },
+                { type: 'Fe', pos: [25,25,-25], color: '#78909c', size: 6 }, { type: 'Fe', pos: [-25,25,-25], color: '#78909c', size: 6 },
+                { type: 'Fe', pos: [-25,-25,25], color: '#78909c', size: 6 }, { type: 'Fe', pos: [25,-25,25], color: '#78909c', size: 6 },
+                { type: 'Fe', pos: [25,25,25], color: '#78909c', size: 6 }, { type: 'Fe', pos: [-25,25,25], color: '#78909c', size: 6 },
+                { type: 'Fe', pos: [0,0,0], color: '#78909c', size: 6 },
+                { type: 'C', pos: [0,25,0], color: '#263238', size: 4 }
+            ],
+            bonds: [[0,8], [1,8], [2,8], [3,8], [4,8], [5,8], [6,8], [7,8], [2,9], [3,9]]
+        },
+        latticeParams: { a: 2.87, b: 2.87, c: 2.87 },
+        palette: { primary: '#90a4ae', secondary: '#263238', accent: '#ff5722' }
     },
     {
         id: 'concrete',
@@ -305,7 +484,19 @@ window.MaterialsDatabase = [
             "Defense": "Nuclear reactor containment domes and bunkers."
         },
         vulnerabilities: "Terrible tensile strength. If the ground shifts or a beam bends, unreinforced concrete cracks instantly. This is why it must be poured around steel rebar.",
-        future_potential: "Self-healing concrete embedded with dormant bacteria that secrete limestone to automatically seal cracks when water seeps in."
+        future_potential: "Self-healing concrete embedded with dormant bacteria that secrete limestone to automatically seal cracks when water seeps in.",
+        symbol: 'Concrete',
+        renderMode: 'network',
+        blueprint: {
+            atoms: [
+                { type: 'Aggregate', pos: [0,0,0], color: '#9e9e9e', size: 15 },
+                { type: 'Cement', pos: [25,10,10], color: '#bdbdbd', size: 5 },
+                { type: 'Cement', pos: [-20,-15,5], color: '#bdbdbd', size: 5 },
+                { type: 'Cement', pos: [10,-20,-10], color: '#bdbdbd', size: 5 }
+            ],
+            bonds: [[0,1], [0,2], [0,3]]
+        },
+        palette: { primary: '#9e9e9e', secondary: '#424242', accent: '#ffffff' }
     },
     {
         id: 'aluminum',
@@ -327,7 +518,24 @@ window.MaterialsDatabase = [
             "Transportation": "Lightweight engine blocks and bicycle frames."
         },
         vulnerabilities: "Suffers from metal fatigue. Unlike steel, which can theoretically bend back and forth forever if the force is small, aluminum will eventually crack after a certain number of cycles, no matter how small the force.",
-        future_potential: "Aluminum-ion batteries as a safer, faster-charging, and cheaper alternative to Lithium-ion."
+        future_potential: "Aluminum-ion batteries as a safer, faster-charging, and cheaper alternative to Lithium-ion.",
+        symbol: 'Al',
+        renderMode: 'lattice',
+        latticeType: 'fcc',
+        blueprint: {
+            atoms: [
+                { type: 'Al', pos: [-25,-25,-25], color: '#d3d3d3', size: 6 }, { type: 'Al', pos: [25,-25,-25], color: '#d3d3d3', size: 6 },
+                { type: 'Al', pos: [25,25,-25], color: '#d3d3d3', size: 6 }, { type: 'Al', pos: [-25,25,-25], color: '#d3d3d3', size: 6 },
+                { type: 'Al', pos: [-25,-25,25], color: '#d3d3d3', size: 6 }, { type: 'Al', pos: [25,-25,25], color: '#d3d3d3', size: 6 },
+                { type: 'Al', pos: [25,25,25], color: '#d3d3d3', size: 6 }, { type: 'Al', pos: [-25,25,25], color: '#d3d3d3', size: 6 },
+                { type: 'Al', pos: [0,-25,0], color: '#d3d3d3', size: 6 }, { type: 'Al', pos: [0,25,0], color: '#d3d3d3', size: 6 },
+                { type: 'Al', pos: [-25,0,0], color: '#d3d3d3', size: 6 }, { type: 'Al', pos: [25,0,0], color: '#d3d3d3', size: 6 },
+                { type: 'Al', pos: [0,0,-25], color: '#d3d3d3', size: 6 }, { type: 'Al', pos: [0,0,25], color: '#d3d3d3', size: 6 }
+            ],
+            bonds: [[0,8], [8,1], [1,11], [11,2], [2,9], [9,3], [3,10], [10,0], [4,8], [8,5], [5,11], [11,6], [6,9], [9,7], [7,10], [10,4]]
+        },
+        latticeParams: { a: 4.05, b: 4.05, c: 4.05 },
+        palette: { primary: '#d3d3d3', secondary: '#696969', accent: '#00ffff' }
     },
     {
         id: 'teflon',
@@ -348,8 +556,20 @@ window.MaterialsDatabase = [
             "Industrial": "Chemically inert pipe linings and valves in chemical plants.",
             "Aerospace": "Self-lubricating frictionless bearings and wire insulation."
         },
-        vulnerabilities: "If heated above 350\u00b0C, it begins to degrade, releasing highly toxic fluoropolymer fumes. It also cannot be processed by normal plastic injection molding because it doesn't flow like a liquid when melted.",
-        future_potential: "Advanced biomedical implants, as its extreme chemical inertness means the human body rarely rejects it."
+        symbol: 'PTFE',
+        renderMode: 'polymer',
+        blueprint: {
+            atoms: [
+                { type: 'C', pos: [0,-40,0], color: '#333333', size: 5 }, { type: 'C', pos: [0,-10,0], color: '#333333', size: 5 },
+                { type: 'C', pos: [0,20,0], color: '#333333', size: 5 }, { type: 'C', pos: [0,50,0], color: '#333333', size: 5 },
+                { type: 'F', pos: [15,-40,15], color: '#ffffff', size: 4 }, { type: 'F', pos: [-15,-40,-15], color: '#ffffff', size: 4 },
+                { type: 'F', pos: [15,-10,-15], color: '#ffffff', size: 4 }, { type: 'F', pos: [-15,-10,15], color: '#ffffff', size: 4 },
+                { type: 'F', pos: [15,20,15], color: '#ffffff', size: 4 }, { type: 'F', pos: [-15,20,-15], color: '#ffffff', size: 4 },
+                { type: 'F', pos: [15,50,-15], color: '#ffffff', size: 4 }, { type: 'F', pos: [-15,50,15], color: '#ffffff', size: 4 }
+            ],
+            bonds: [[0,1], [1,2], [2,3], [0,4], [0,5], [1,6], [1,7], [2,8], [2,9], [3,10], [3,11]]
+        },
+        palette: { primary: '#ffffff', secondary: '#aaaaaa', accent: '#000000' }
     },
     {
         id: 'spider-silk',
@@ -371,7 +591,18 @@ window.MaterialsDatabase = [
             "Textiles": "High-performance sustainable fabrics."
         },
         vulnerabilities: "Degrades under UV light and loses tension when wet.",
-        future_potential: "Bio-manufactured silk for structural medical implants."
+        future_potential: "Bio-manufactured silk for structural medical implants.",
+        symbol: 'Silk',
+        renderMode: 'polymer',
+        blueprint: {
+            atoms: [
+                { type: 'C', pos: [0,-40,0], color: '#8d6e63', size: 5 }, { type: 'N', pos: [15,-20,0], color: '#1e88e5', size: 5 },
+                { type: 'C', pos: [0,0,0], color: '#8d6e63', size: 5 }, { type: 'N', pos: [15,20,0], color: '#1e88e5', size: 5 },
+                { type: 'O', pos: [-15,0,0], color: '#e53935', size: 4 }
+            ],
+            bonds: [[0,1], [1,2], [2,3], [2,4]]
+        },
+        palette: { primary: '#a1887f', secondary: '#4e342e', accent: '#ff5252' }
     },
     {
         id: 'ybco',
@@ -393,7 +624,19 @@ window.MaterialsDatabase = [
             "Energy": "Lossless power grids (Experimental)."
         },
         vulnerabilities: "Extremely brittle ceramic; difficult to shape into flexible wires.",
-        future_potential: "Fusion reactor magnets for compact, limitless energy."
+        future_potential: "Fusion reactor magnets for compact, limitless energy.",
+        symbol: 'YBCO',
+        renderMode: 'lattice',
+        blueprint: {
+            atoms: [
+                { type: 'Y', pos: [0,0,0], color: '#ffeb3b', size: 8 },
+                { type: 'Ba', pos: [30,30,30], color: '#4caf50', size: 10 },
+                { type: 'Cu', pos: [0,30,0], color: '#ff9800', size: 6 },
+                { type: 'O', pos: [15,30,0], color: '#f44336', size: 4 }
+            ],
+            bonds: [[0,2], [2,3], [1,2]]
+        },
+        palette: { primary: '#8bc34a', secondary: '#33691e', accent: '#ffeb3b' }
     },
     {
         id: 'gold',
@@ -415,7 +658,27 @@ window.MaterialsDatabase = [
             "Medical": "Biocompatible dental restorations."
         },
         vulnerabilities: "Exceptionally soft; easily scratched unless alloyed.",
-        future_potential: "Cancer-destroying nanoparticles using targeted laser heating."
+        future_potential: "Cancer-destroying nanoparticles using targeted laser heating.",
+        dimensions: 3,
+        spaceGroup: 'Fm-3m',
+        crystalSystem: 'Cubic',
+        symbol: 'Au',
+        renderMode: 'lattice',
+        latticeType: 'fcc',
+        blueprint: {
+            atoms: [
+                { type: 'Au', pos: [-25,-25,-25], color: '#ffd700', size: 6 }, { type: 'Au', pos: [25,-25,-25], color: '#ffd700', size: 6 },
+                { type: 'Au', pos: [25,25,-25], color: '#ffd700', size: 6 }, { type: 'Au', pos: [-25,25,-25], color: '#ffd700', size: 6 },
+                { type: 'Au', pos: [-25,-25,25], color: '#ffd700', size: 6 }, { type: 'Au', pos: [25,-25,25], color: '#ffd700', size: 6 },
+                { type: 'Au', pos: [25,25,25], color: '#ffd700', size: 6 }, { type: 'Au', pos: [-25,25,25], color: '#ffd700', size: 6 },
+                { type: 'Au', pos: [0,-25,0], color: '#ffd700', size: 6 }, { type: 'Au', pos: [0,25,0], color: '#ffd700', size: 6 },
+                { type: 'Au', pos: [-25,0,0], color: '#ffd700', size: 6 }, { type: 'Au', pos: [25,0,0], color: '#ffd700', size: 6 },
+                { type: 'Au', pos: [0,0,-25], color: '#ffd700', size: 6 }, { type: 'Au', pos: [0,0,25], color: '#ffd700', size: 6 }
+            ],
+            bonds: [[0,8], [8,1], [1,11], [11,2], [2,9], [9,3], [3,10], [10,0], [4,8], [8,5], [5,11], [11,6], [6,9], [9,7], [7,10], [10,4]]
+        },
+        latticeParams: { a: 4.08, b: 4.08, c: 4.08 },
+        palette: { primary: '#ffd700', secondary: '#b8860b', accent: '#ffffff' }
     },
     {
         id: 'diamond',
@@ -437,7 +700,26 @@ window.MaterialsDatabase = [
             "Audio": "Tweeter domes in audiophile speakers."
         },
         vulnerabilities: "Brittle under impact; burns into CO2 at >700°C in oxygen.",
-        future_potential: "Diamond computer chips running 100,000x faster than silicon."
+        future_potential: "Diamond computer chips running 100,000x faster than silicon.",
+        dimensions: 3,
+        spaceGroup: 'Fd-3m',
+        crystalSystem: 'Cubic',
+        symbol: 'C',
+        renderMode: 'lattice',
+        latticeType: 'diamond',
+        blueprint: {
+            atoms: [
+                { type: 'C', pos: [-25,-25,-25], color: '#00ffff', size: 5 }, { type: 'C', pos: [25,-25,-25], color: '#00ffff', size: 5 },
+                { type: 'C', pos: [25,25,-25], color: '#00ffff', size: 5 }, { type: 'C', pos: [-25,25,-25], color: '#00ffff', size: 5 },
+                { type: 'C', pos: [-25,-25,25], color: '#00ffff', size: 5 }, { type: 'C', pos: [25,-25,25], color: '#00ffff', size: 5 },
+                { type: 'C', pos: [25,25,25], color: '#00ffff', size: 5 }, { type: 'C', pos: [-25,25,25], color: '#00ffff', size: 5 },
+                { type: 'C', pos: [0, -12, 0], color: '#00ffff', size: 5 }, { type: 'C', pos: [0, 12, 0], color: '#00ffff', size: 5 },
+                { type: 'C', pos: [-12.5, 12.5, 12.5], color: '#00ffff', size: 5 }, { type: 'C', pos: [12.5, -12.5, 12.5], color: '#00ffff', size: 5 }
+            ],
+            bonds: [[0,8], [1,11], [4,8], [5,11], [8,9], [9,10], [2,9], [3,10], [6,9], [7,10]]
+        },
+        latticeParams: { a: 3.57, b: 3.57, c: 3.57 },
+        palette: { primary: '#00ffff', secondary: '#008b8b', accent: '#ffffff' }
     },
     {
         id: 'silicon-carbide',
@@ -459,7 +741,18 @@ window.MaterialsDatabase = [
             "Industrial": "Kiln linings and abrasive grit."
         },
         vulnerabilities: "Brittle ceramic impact failure; expensive single-crystal growth.",
-        future_potential: "Ultra-fast EV chargers (5-minute full charge capability)."
+        future_potential: "Ultra-fast EV chargers (5-minute full charge capability).",
+        symbol: 'SiC',
+        renderMode: 'lattice',
+        blueprint: {
+            atoms: [
+                { type: 'Si', pos: [-25,-25,-25], color: '#78909c', size: 6 },
+                { type: 'C', pos: [0,0,0], color: '#263238', size: 4 },
+                { type: 'Si', pos: [25,25,25], color: '#78909c', size: 6 }
+            ],
+            bonds: [[0,1], [1,2]]
+        },
+        palette: { primary: '#546e7a', secondary: '#263238', accent: '#ffffff' }
     },
     {
         id: 'wood',
@@ -524,8 +817,16 @@ window.MaterialsDatabase = [
             "Textiles": "High-durability ropes and apparel.",
             "Consumer": "Guitar strings and zip ties."
         },
-        vulnerabilities: "Absorbs water from air, reducing its strength and causing swelling.",
-        future_potential: "Bio-based Nylons synthesized from engineered bacteria."
+        symbol: 'Nylon',
+        renderMode: 'polymer',
+        blueprint: {
+            atoms: [
+                { type: 'C', pos: [0,-40,0], color: '#ffffff', size: 5 }, { type: 'C', pos: [0,-10,0], color: '#ffffff', size: 5 },
+                { type: 'N', pos: [15,10,0], color: '#1e88e5', size: 5 }, { type: 'C', pos: [0,30,0], color: '#ffffff', size: 5 }
+            ],
+            bonds: [[0,1], [1,2], [2,3]]
+        },
+        palette: { primary: '#f0f8ff', secondary: '#4682b4', accent: '#ffffff' }
     },
     {
         id: 'polycarbonate',
@@ -547,7 +848,17 @@ window.MaterialsDatabase = [
             "Medical": "Surgical instruments and incubators."
         },
         vulnerabilities: "Susceptible to scratching and UV-induced yellowing.",
-        future_potential: "BPA-free high-impact bio-polycarbonates."
+        future_potential: "BPA-free high-impact bio-polycarbonates.",
+        symbol: 'PC',
+        renderMode: 'polymer',
+        blueprint: {
+            atoms: [
+                { type: 'C', pos: [-20,0,0], color: '#e1f5fe', size: 5 }, { type: 'C', pos: [20,0,0], color: '#e1f5fe', size: 5 },
+                { type: 'O', pos: [0,15,0], color: '#ff5252', size: 4 }, { type: 'C', pos: [0,35,0], color: '#e1f5fe', size: 5 }
+            ],
+            bonds: [[0,2], [1,2], [2,3]]
+        },
+        palette: { primary: '#b3e5fc', secondary: '#01579b', accent: '#ff5252' }
     },
     {
         id: 'borosilicate-glass',
@@ -569,7 +880,18 @@ window.MaterialsDatabase = [
             "Domestic": "Oven-safe bakeware."
         },
         vulnerabilities: "Still a ceramic; low tensile strength and brittle impact failure.",
-        future_potential: "Ultra-thin flexible glass for rollable sensors."
+        future_potential: "Ultra-thin flexible glass for rollable sensors.",
+        symbol: 'Boro',
+        renderMode: 'network',
+        blueprint: {
+            atoms: [
+                { type: 'Si', pos: [0,0,0], color: '#ffffff', size: 5 },
+                { type: 'B', pos: [20,10,0], color: '#9c27b0', size: 4 },
+                { type: 'O', pos: [10,25,0], color: '#03a9f4', size: 3 }
+            ],
+            bonds: [[0,1], [1,2]]
+        },
+        palette: { primary: '#e1f5fe', secondary: '#0288d1', accent: '#9c27b0' }
     },
     {
         id: 'bronze',
@@ -591,7 +913,18 @@ window.MaterialsDatabase = [
             "Industrial": "Low-friction bushings and non-sparking tools."
         },
         vulnerabilities: "Heavier and more expensive than steel; susceptible to 'bronze disease'.",
-        future_potential: "3D printed aluminum-bronze for tidal energy generators."
+        future_potential: "3D printed aluminum-bronze for tidal energy generators.",
+        symbol: 'CuSn',
+        renderMode: 'lattice',
+        blueprint: {
+            atoms: [
+                { type: 'Cu', pos: [-25,-25,-25], color: '#cd7f32', size: 6 },
+                { type: 'Sn', pos: [0,0,0], color: '#c0c0c0', size: 7 },
+                { type: 'Cu', pos: [25,25,25], color: '#cd7f32', size: 6 }
+            ],
+            bonds: [[0,1], [1,2]]
+        },
+        palette: { primary: '#cd7f32', secondary: '#3e2723', accent: '#ffffff' }
     },
     {
         id: 'lithium',
@@ -613,7 +946,25 @@ window.MaterialsDatabase = [
             "Medical": "Mood-stabilizing pharmaceuticals."
         },
         vulnerabilities: "Highly unstable and flammable; environmentally taxing extraction.",
-        future_potential: "Solid-state batteries doubling EV range safely."
+        future_potential: "Solid-state batteries doubling EV range safely.",
+        symbol: 'Li',
+        renderMode: 'lattice',
+        latticeType: 'bcc',
+        blueprint: {
+            atoms: [
+                { type: 'Li', pos: [-25,-25,-25], color: '#f5f5f5', size: 6 },
+                { type: 'Li', pos: [25,-25,-25], color: '#f5f5f5', size: 6 },
+                { type: 'Li', pos: [25,25,-25], color: '#f5f5f5', size: 6 },
+                { type: 'Li', pos: [-25,25,-25], color: '#f5f5f5', size: 6 },
+                { type: 'Li', pos: [-25,-25,25], color: '#f5f5f5', size: 6 },
+                { type: 'Li', pos: [25,-25,25], color: '#f5f5f5', size: 6 },
+                { type: 'Li', pos: [25,25,25], color: '#f5f5f5', size: 6 },
+                { type: 'Li', pos: [-25,25,25], color: '#f5f5f5', size: 6 },
+                { type: 'Li', pos: [0,0,0], color: '#f5f5f5', size: 6 }
+            ],
+            bonds: [[0,8], [1,8], [2,8], [3,8], [4,8], [5,8], [6,8], [7,8]]
+        },
+        palette: { primary: '#f5f5f5', secondary: '#9e9e9e', accent: '#ff1744' }
     },
     {
         id: 'neodymium',
@@ -635,7 +986,18 @@ window.MaterialsDatabase = [
             "Medical": "MRI machine permanent magnets."
         },
         vulnerabilities: "Loses magnetism permanently if heated; highly prone to corrosion.",
-        future_potential: "Alternative crystal structures to reduce rare-earth reliance."
+        future_potential: "Alternative crystal structures to reduce rare-earth reliance.",
+        symbol: 'NdFeB',
+        renderMode: 'lattice',
+        blueprint: {
+            atoms: [
+                { type: 'Nd', pos: [0,0,0], color: '#607d8b', size: 8 },
+                { type: 'Fe', pos: [25,0,0], color: '#78909c', size: 5 },
+                { type: 'B', pos: [0,25,0], color: '#ff5722', size: 4 }
+            ],
+            bonds: [[0,1], [0,2]]
+        },
+        palette: { primary: '#607d8b', secondary: '#263238', accent: '#ff5722' }
     },
     {
         id: 'polyurethane',
@@ -657,7 +1019,18 @@ window.MaterialsDatabase = [
             "Construction": "Spray-foam thermal insulation."
         },
         vulnerabilities: "Highly flammable; releases toxic hydrogen cyanide when burning.",
-        future_potential: "Bio-polyurethanes derived from algae and plant oils."
+        future_potential: "Bio-polyurethanes derived from algae and plant oils.",
+        symbol: 'PU',
+        renderMode: 'polymer',
+        blueprint: {
+            atoms: [
+                { type: 'C', pos: [-20,0,0], color: '#fff9c4', size: 5 },
+                { type: 'N', pos: [0,15,0], color: '#1e88e5', size: 5 },
+                { type: 'O', pos: [20,0,0], color: '#ff5252', size: 4 }
+            ],
+            bonds: [[0,1], [1,2]]
+        },
+        palette: { primary: '#fff9c4', secondary: '#fbc02d', accent: '#1e88e5' }
     },
     {
         id: 'beryllium',
@@ -679,7 +1052,20 @@ window.MaterialsDatabase = [
             "Audio": "Tweeter cones in high-end studio monitors."
         },
         vulnerabilities: "Astoundingly toxic if inhaled as dust; requires extreme safety protocols.",
-        future_potential: "Critical for deep-space optics and neutron shielding in nuclear reactors."
+        future_potential: "Critical for deep-space optics and neutron shielding in nuclear reactors.",
+        symbol: 'Be',
+        renderMode: 'lattice',
+        latticeType: 'hcp',
+        blueprint: {
+            atoms: [
+                { type: 'Be', pos: [0,0,0], color: '#e0e0e0', size: 5 },
+                { type: 'Be', pos: [30,0,0], color: '#e0e0e0', size: 5 },
+                { type: 'Be', pos: [15,25,0], color: '#e0e0e0', size: 5 },
+                { type: 'Be', pos: [15,8,25], color: '#e0e0e0', size: 5 }
+            ],
+            bonds: [[0,1], [1,2], [2,0], [0,3], [1,3], [2,3]]
+        },
+        palette: { primary: '#e0e0e0', secondary: '#424242', accent: '#ffffff' }
     },
     {
         id: 'cobalt',
@@ -1075,7 +1461,18 @@ window.MaterialsDatabase = [
             "Infrastructure": "Seismic shields to divert earthquake waves."
         },
         vulnerabilities: "Currently only functional at narrow frequency bands.",
-        future_potential: "Paper-thin 'metalenses' that eliminate camera bumps."
+        future_potential: "Paper-thin 'metalenses' that eliminate camera bumps.",
+        symbol: 'Meta',
+        renderMode: 'network',
+        blueprint: {
+            atoms: [
+                { type: 'Node', pos: [0,0,0], color: '#00e676', size: 8 },
+                { type: 'Node', pos: [40,0,0], color: '#00e676', size: 8 },
+                { type: 'Node', pos: [20,35,0], color: '#00e676', size: 8 }
+            ],
+            bonds: [[0,1], [1,2], [2,0]]
+        },
+        palette: { primary: '#00e676', secondary: '#1b5e20', accent: '#ffffff' }
     },
     {
         id: 'carbon-nanotubes',
