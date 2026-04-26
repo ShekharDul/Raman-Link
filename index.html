@@ -4,193 +4,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Material Atlas</title>
+    <title>RAMAN-LINK // Raman Spectral Assignment</title>
     <meta name="description"
-        content="The Material Atlas — Navigate the materials landscape. A curated digital monograph of the most important fundamental materials.">
+        content="An interface for Raman spectral assignment and polymorphic metadata extraction.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Manrope:wght@300;500;700&family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap"
         rel="stylesheet">
-  <script type="module" crossorigin src="/material-atlas/assets/index-CILy_gwO.js"></script>
-  <link rel="stylesheet" crossorigin href="/material-atlas/assets/index-BYqDyv0y.css">
+  <script type="module" crossorigin src="/Raman-Link/assets/index-1GT_uNHz.js"></script>
+  <link rel="stylesheet" crossorigin href="/Raman-Link/assets/index-DvACNt5c.css">
 </head>
 
-<body>
+<body class="monograph-theme">
     <div id="app">
-        <div class="digital-census-bg" id="census-bg"></div>
+        <div class="background-grid"></div>
 
-        <header class="hero">
-            <nav>
-                <div class="logo">MATERIAL ATLAS</div>
-                <div class="nav-links">
-                    <div class="search-wrapper">
-                        <input type="text" id="material-search" placeholder="Search Materials...">
-                    </div>
-                    <a href="#library">Library</a>
-                    <a href="#" id="open-author">Author</a>
-                </div>
-            </nav>
-        </header>
+        <!-- SECTION 1: LANDING -->
+        <section id="view-home" class="view-active">
+            <header class="monograph-header">
+                <div class="logo">RAMAN-<span>LINK</span></div>
+                <div class="app-status" style="font-size: 0.65rem; color: var(--text-dim); font-weight: 700; font-family: var(--font-mono);">ANALYSIS_INTERFACE_CORE</div>
+            </header>
 
-        <!-- Skip Button -->
-        <button class="skip-btn" id="skip-to-archive">Skip to Archive ↓</button>
-
-        <main id="view-home">
-            <!-- Scrollytelling Tutorial (Hero → Search → Card + Properties) -->
-            <div class="tutorial-wrapper" id="tutorial-trigger">
-                <div class="tutorial-sticky">
-                    <!-- Narrative is handled by step-monograph and kinetic reveal -->
-
-                    <!-- Phase 0: Brand Hero -->
-                    <div class="step step-hero" id="step-0" style="opacity: 1;">
-                        <div class="hero-text-group">
-                            <h1 class="serif-title tutorial-hero-title">The Material<br>Atlas</h1>
-                            <p class="hero-subtitle">Navigate the Materials Landscape</p>
-                        </div>
-                    </div>
-
-                    <!-- Phase 0.5: Project Monograph -->
-                    <div class="step step-monograph" id="step-0-5">
-                        <div class="monograph-reveal-box">
-                            <span class="mono-line">Welcome to your guide to materials science.</span>
-                            <span class="mono-line">Learn how we use different atoms and</span>
-                            <span class="mono-line">structures to create everything from</span>
-                            <span class="mono-line">medicine to spaceships.</span>
-                        </div>
-                    </div>
-                    <!-- Phase 1: Search Origin -->
-                    <div class="step step-search" id="step-1">
-                        <div class="sim-search-box">
-                            <span class="type-target-tutorial">Search Materials_</span>
-                        </div>
-                    </div>
-
-                    <!-- Phase 2: Graphene Card + Property Orbit -->
-                    <div class="step step-card" id="step-2">
-                        <div class="tutorial-card-manifest">
-                            <div class="nitinol-lattice-bg" id="lattice-anim-target"
-                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.15; pointer-events: none;">
-                                <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
-                                    <pattern id="square-pattern" width="20" height="20" patternUnits="userSpaceOnUse">
-                                        <rect width="20" height="20" fill="none" stroke="var(--accent-blue)"
-                                            stroke-width="0.1" />
-                                        <circle cx="0" cy="0" r="0.5" fill="var(--accent-blue)" />
-                                    </pattern>
-                                    <rect width="100" height="100" fill="url(#square-pattern)" />
-                                </svg>
-                            </div>
-
-                            <div class="tutorial-card-inner">
-                                <div class="tutorial-card-wing left">
-                                    <span class="wing-label">TRANSFORMATION</span>
-                                    <div class="wing-data">Range: -20 to 110°C<br>Phase: Austenitic<br>Comp: 50/50 Ni-Ti
-                                    </div>
-                                </div>
-                                <div class="tutorial-card-center">
-                                    <h2 class="serif-title tutorial-title">Nitinol</h2>
-                                    <div class="divider"></div>
-                                    <p class="tutorial-desc">A nickel-titanium alloy that "remembers" its original
-                                        shape. By transitioning between Martensitic and Austenitic phases, it converts
-                                        thermal energy into mechanical motion.</p>
-                                </div>
-                                <div class="tutorial-card-wing right">
-                                    <span class="wing-label">MECHANICAL</span>
-                                    <div class="wing-data">Recovery: 8% Strain<br>Modulus: 75 GPa<br>Status: Memory Lock
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Phase 3: Property Reveal -->
-                    <div class="step step-properties" id="step-3">
-                        <div class="prop-orbit">
-                            <div class="orbit-item" style="--angle: 0deg">
-                                <strong>Form: Shape Memory</strong>
-                                <span class="prop-desc">Atomic lattice realignment</span>
-                            </div>
-                            <div class="orbit-item" style="--angle: 72deg">
-                                <strong>Elasticity: 8%</strong>
-                                <span class="prop-desc">Superelastic recovery threshold</span>
-                            </div>
-                            <div class="orbit-item" style="--angle: 144deg">
-                                <strong>Use: Biomedical</strong>
-                                <span class="prop-desc">Stents and orthodontic wires</span>
-                            </div>
-                            <div class="orbit-item" style="--angle: 216deg">
-                                <strong>Biocompat: High</strong>
-                                <span class="prop-desc">Immune system compatibility</span>
-                            </div>
-                            <div class="orbit-item" style="--angle: 288deg">
-                                <strong>Status: Industrial</strong>
-                                <span class="prop-desc">Widely deployed in robotics</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Library View -->
-            <section id="library">
-                <span class="section-meta">Archive Access</span>
-                <h2 class="serif-text" style="text-align: center; margin-bottom: 3rem;">Material Explorer.</h2>
-
-                <div class="filter-bar">
-                    <button class="filter-btn active" data-filter="all">All Materials</button>
-                    <button class="filter-btn" data-filter="metal">Metals</button>
-                    <button class="filter-btn" data-filter="polymer">Polymers</button>
-                    <button class="filter-btn" data-filter="ceramic">Ceramics</button>
-                    <button class="filter-btn" data-filter="composite">Composites</button>
-                    <button class="filter-btn" data-filter="frontier">Frontier</button>
-                </div>
-
-                <div class="materials-grid" id="materials-grid">
-                    <!-- Materials will be injected here -->
-                </div>
-            </section>
-
-            <!-- Deep Extraction Lab (Standalone, Interactive) -->
-
-            <section id="page-detail" class="closed">
-                <button class="back-btn">← Back to Home</button>
-                <div id="detail-content"></div>
-            </section>
-        </main>
-        <!-- Author Slide-Panel -->
-        <div class="author-panel" id="author-modal">
-            <div class="panel-content">
-                <button class="close-panel" id="close-author">&times;</button>
+            <div class="hero-container">
+                <h1 class="serif-title">Raman Spectral Assignment. <span>Automated.</span></h1>
+                <p class="subtitle">A specialized interface for interpreting Raman data in <strong>Organic APIs and Pharmaceutical Materials</strong>. Correlate raw spectra with molecular structure using the Socrates Standard.</p>
                 
-                <div class="panel-header">
-                    <span class="panel-meta">Curator Profile</span>
-                    <h2 class="serif-title">About the Project</h2>
+                <div class="cta-container" style="text-align: left; margin-bottom: 60px;">
+                    <button id="launch-app" class="btn-ai">OPEN INTERFACE &rarr;</button>
+                    <button id="view-methodology-btn" class="btn-secondary" style="margin-left: 20px;">TECHNICAL METHODOLOGY</button>
                 </div>
 
-                <div class="panel-body">
-                    <p class="casual-statement">
-                        I'm a Leeds MSc Materials Science and Engineering graduate. My research project focused on 'Optimizing physicochemical properties of APIs,' where I used characterization techniques like XRD and Raman spectroscopy for the structural and surface analysis of crystals. 
-                    </p>
-                    <p class="casual-statement">
-                        This website is my first real attempt at building a project while learning my way around AI.
-                    </p>
-                </div>
-
-                <div class="panel-footer">
-                    <span class="footer-label">Technical Proficiencies</span>
-                    <div class="mini-tags">
-                        <span>XRD & Raman</span>
-                        <span>Optical Microscopy</span>
-                        <span>Data Automation</span>
-                        <span>Python/VBA</span>
+                <div class="narrative-grid">
+                    <div class="glass-card">
+                        <h3>Organic Scaffolds</h3>
+                        <p>Optimization for organic pharmaceutical scaffolds, including Amides, Aromatics, and complex Heterocyclic structures.</p>
+                    </div>
+                    <div class="glass-card">
+                        <h3>Polymorphic Metadata</h3>
+                        <p>Instant extraction of polymorphic markers and experimental data from global pharmaceutical research indices.</p>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="panel-overlay" id="author-overlay"></div>
+        </section>
+
+        <!-- SECTION 2: ANALYZER -->
+        <section id="view-app" class="view-hidden">
+            <header class="app-header">
+                <div class="app-brand" id="go-home">RAMAN-<span>LINK</span></div>
+                <div class="app-status" id="snr-display" style="font-size: 0.7rem; font-weight: 600; color: var(--text-dim);">STATUS: ACTIVE</div>
+            </header>
+
+            <div class="app-container">
+                <div class="spectrum-workspace" id="spectrum-workspace">
+                    <div class="workspace-header">
+                        <div class="meta-pills" id="meta-pills">
+                            <span class="pill">SOURCE: NULL</span>
+                        </div>
+                        <div class="dual-upload-controls">
+                            <div class="upload-trigger" id="upload-reference">LOAD REFERENCE</div>
+                            <div class="upload-trigger" id="upload-sample">LOAD SAMPLE</div>
+                            <input type="file" id="file-input" hidden accept=".csv,.txt">
+                        </div>
+                    </div>
+                    <div class="canvas-wrapper">
+                        <canvas id="raman-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="resizer-handle" id="resizer-handle">
+                    <div class="handle-line"></div>
+                </div>
+
+                <div class="analysis-dashboard">
+                    <div class="dashboard-col metadata-col">
+                        <div class="box-label">01. COMPOUND_IDENTIFIER</div>
+                        <div class="search-box">
+                            <input type="text" id="compound-search" placeholder="Enter identifier (e.g. Paracetamol)">
+                            <button id="search-btn">SEARCH</button>
+                        </div>
+                        <div class="pubchem-dossier" id="pubchem-dossier">
+                            <p class="placeholder" style="font-size: 0.75rem; color: var(--text-dim);">Awaiting query...</p>
+                        </div>
+                        <button id="add-to-analysis-btn" class="btn-secondary" style="display:none; width:100%; margin-bottom:20px;">
+                            CORRELATE STRUCTURE
+                        </button>
+
+                        <div class="analysis-stats">
+                            <div class="stat">ASSIGNED_PEAKS: <span id="stat-peaks">0</span></div>
+                            <div class="stat">CORRELATION_CONFIDENCE: <span id="stat-match">0%</span></div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-col assignments-col">
+                        <div class="box-label">02. SPECTRAL_ASSIGNMENTS</div>
+                        <div id="assignments-list" class="assignments-table">
+                            <div class="table-row header">
+                                <span>WAVENUMBER</span>
+                                <span>MODE</span>
+                                <span>FWHM</span>
+                                <span>AREA</span>
+                            </div>
+                            <div class="list-content">
+                                <p class="placeholder" style="font-size: 0.75rem; color: var(--text-dim); padding-top: 20px;">Awaiting data ingestion...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-col evidence-col">
+                        <div class="box-label">03. TECHNICAL_RATIONALE</div>
+                        <div class="evidence-content">
+                            <div id="ev-body">
+                                <p class="placeholder" style="font-size: 0.75rem; color: var(--text-dim);">Select assignment for rationale.</p>
+                            </div>
+                            <div class="citation-block" id="ev-citation"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: TECHNICAL METHODOLOGY -->
+        <section id="view-methodology" class="view-hidden">
+            <header class="app-header">
+                <div class="app-brand" id="method-go-home">RAMAN-<span>LINK</span></div>
+                <div style="font-size: 0.6rem; letter-spacing: 2px;">TECHNICAL_METHODOLOGY</div>
+            </header>
+            <div class="method-container">
+                <div class="method-content">
+                    <h1 class="serif-title" style="font-size: 3.5rem;">Technical <span>Methodology.</span></h1>
+                    <p class="subtitle" style="margin-bottom: 80px;">RAMAN-LINK is an interface designed to reduce the manual physical and mental effort involved in spectral interpretation. It provides an automated framework for assignment based on validated physical standards.</p>
+                    
+                    <div class="method-section">
+                        <h3>01. INSTRUMENT AGNOSTICISM</h3>
+                        <p>Our engine utilizes a <span class="detail-link" data-topic="parsing">Universal Heuristic Parser</span> to handle diverse laboratory data formats. It automatically tunnels through metadata headers, detects unit conflicts (nm vs cm⁻¹), and normalizes detector intensity to a 0-1 scale.</p>
+                    </div>
+
+                    <div class="method-section">
+                        <h3>02. METADATA EXTRACTION</h3>
+                        <p>Automation of literature search and reference marker identification. This engine correlates research metadata with raw data to provide initial interpretation markers.</p>
+                    </div>
+
+                    <div class="method-section">
+                        <h3>03. VIBRATIONAL PERTURBATION MODEL</h3>
+                        <p>Calculation of energy shifts between molecular states and solid-state environments using established physical laws (Hydrogen Bonding, Steric Strain).</p>
+                    </div>
+
+                    <div class="method-section">
+                        <h3>04. STANDARDIZED DATA PROCESSING</h3>
+                        <p>A deterministic mathematical sequence for signal preparation: Modified Z-Score despiking, 5th-order polynomial baseline correction, and Savitzky-Golay smoothing.</p>
+                    </div>
+
+                    <div class="method-section">
+                        <h3>05. THE SOCRATES STANDARD</h3>
+                        <p>Structural correlation grounded in the <span class="detail-link" data-topic="socrates">Socrates Standard</span>—the characteristic group frequency tables of George Socrates. This enables evidence-based assignments backed by peer-reviewed spectroscopic truth.</p>
+                    </div>
+
+                    <div class="method-section">
+                        <h3>06. THE MISSION: COGNITIVE REDUCTION</h3>
+                        <p>The system is designed to automate the foundational 10-20% of manual data preparation and initial assignment, allowing the researcher to focus on higher-level analysis.</p>
+                    </div>
+
+                    <button class="btn-ai" id="method-to-app" style="margin-top: 40px;">OPEN INTERFACE</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: DEEP DIVE DETAILS -->
+        <section id="view-detail" class="view-hidden">
+            <header class="app-header">
+                <div class="app-brand" id="detail-go-home">RAMAN-<span>LINK</span></div>
+                <div style="font-size: 0.6rem; letter-spacing: 2px;" id="detail-topic-label">TECHNICAL_DEEP_DIVE</div>
+            </header>
+            <div class="method-container">
+                <div class="method-content" id="detail-content">
+                    <!-- Dynamic Content Injected Here -->
+                </div>
+                <button class="btn-secondary" id="detail-back-to-protocol" style="margin-top: 40px;">&larr; BACK TO METHODOLOGY</button>
+            </div>
+        </section>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
-
 </html>
