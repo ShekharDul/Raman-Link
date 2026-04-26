@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  base: '/material-atlas/',
+  base: '/Raman-Link/',
   server: {
     port: 8000,
     strictPort: false,
