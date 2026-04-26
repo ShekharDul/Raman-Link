@@ -11,307 +11,142 @@ export class WebGLCore {
 
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(35, this.width / this.height, 0.1, 5000);
-        this.camera.position.z = 350;
+        this.camera.position.z = 150;
 
-        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, logarithmicDepthBuffer: true });
+        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         this.renderer.setSize(this.width, this.height);
         this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        this.renderer.toneMappingExposure = 1.2; // MINIMAL PREMIUM: Reduced from 2.0
         container.appendChild(this.renderer.domElement);
 
-        // Lights: High-End Photographic Rig
-        this.ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-        this.scene.add(this.ambientLight);
-        
-        this.keyLight = new THREE.DirectionalLight(0xffffff, 2.5);
-        this.keyLight.position.set(150, 150, 150);
-        this.scene.add(this.keyLight);
+        this.setupLights();
+        this.setupComposer();
 
-        this.rimLight = new THREE.PointLight(0xffffff, 5, 800);
-        this.rimLight.position.set(-150, -150, -150);
-        this.scene.add(this.rimLight);
-
-        // Env Map for Chrome/Metallic Luster
-        const pmremGenerator = new THREE.PMREMGenerator(this.renderer);
-        pmremGenerator.compileEquirectangularShader();
-        this.envMap = pmremGenerator.fromScene(new THREE.Scene()).texture;
-
-        // Groups
-        this.masterGroup = new THREE.Group();
-        this.unitCellGroup = new THREE.Group();
-        this.bulkGroup = new THREE.Group();
-        this.hudGroup = new THREE.Group();
-        
-        this.scene.add(this.masterGroup);
-        this.masterGroup.add(this.unitCellGroup);
-        this.masterGroup.add(this.bulkGroup);
-        this.masterGroup.add(this.hudGroup);
-
-        // Post-Processing
-        this.composer = new EffectComposer(this.renderer);
-        this.composer.addPass(new RenderPass(this.scene, this.camera));
-        // MINIMAL PREMIUM: Reduced bloom strength from 1.0 to 0.5
-        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(this.width, this.height), 0.5, 0.4, 0.9);
-        this.composer.addPass(this.bloomPass);
+        this.moleculeGroup = new THREE.Group();
+        this.scene.add(this.moleculeGroup);
 
         this.atoms = [];
         this.bonds = [];
-        this.bulkBonds = []; // New: track bulk bonds for animation
-        this.atomData = [];
-        this.hudElements = [];
-        this.bulkMaterials = []; // Optimization: Shared materials for bulk
+        this.currentMode = null;
+        this.animationPhase = 0;
 
         window.addEventListener('resize', () => this.onResize());
-    }
-
-    createPremiumMaterial(color, category, isBulk = false) {
-        const baseColor = new THREE.Color(color);
-        const params = {
-            color: baseColor,
-            envMap: this.envMap,
-            metalness: 0.9,
-            roughness: 0.15, // Slightly rougher for realism
-            clearcoat: 0.5, // Reduced from 1.0
-            clearcoatRoughness: 0.1,
-            emissive: baseColor,
-            emissiveIntensity: isBulk ? 0.02 : 0.05, // Subtle glow
-            transparent: true,
-            opacity: 1.0
-        };
-
-        if (category === 'Metal') {
-            params.metalness = 1.0;
-            params.roughness = 0.08;
-        } else if (category === 'Polymer') {
-            params.metalness = 0.1;
-            params.roughness = 0.3;
-            params.transmission = 0.5; 
-            params.thickness = 5.0;
-            params.attenuationColor = baseColor;
-            params.attenuationDistance = 1.0;
-        } else if (category === 'Ceramic' || category === 'Carbon') {
-            params.metalness = 0.1;
-            params.roughness = 0.1;
-            params.transmission = 0.4;
-            params.ior = 2.4;
-        }
-
-        return new THREE.MeshPhysicalMaterial(params);
-    }
-
-    setupMaterial(material) {
-        this.currentMaterial = material;
-        const blueprint = material.blueprint || { atoms: [], bonds: [] };
-
-        // 1. Full Reset
-        [this.unitCellGroup, this.bulkGroup, this.hudGroup].forEach(g => {
-            while(g.children.length > 0) {
-                const child = g.children[0];
-                if (child.geometry) child.geometry.dispose();
-                if (child.material) {
-                    if (Array.isArray(child.material)) child.material.forEach(m => m.dispose());
-                    else child.material.dispose();
-                }
-                g.remove(child);
-            }
-        });
-
-        this.atoms = [];
-        this.bonds = [];
-        this.bulkBonds = [];
-        this.atomData = [];
-        this.hudElements = [];
-        this.bulkMaterials = [];
-
-        // 2. Build Unit Cell
-        blueprint.atoms.forEach((a) => {
-            const mat = this.createPremiumMaterial(a.color, material.category);
-            const atom = new THREE.Mesh(new THREE.SphereGeometry(a.size || 5, 32, 32), mat); // Lower poly for perf
-            
-            const idlePos = new THREE.Vector3(
-                THREE.MathUtils.randFloatSpread(600),
-                THREE.MathUtils.randFloatSpread(600),
-                THREE.MathUtils.randFloatSpread(600)
-            );
-            atom.position.copy(idlePos);
-            
-            this.unitCellGroup.add(atom);
-            this.atoms.push(atom);
-            this.atomData.push({
-                idlePos: idlePos,
-                targetPos: new THREE.Vector3(...a.pos),
-                noiseOffset: Math.random() * 1000
-            });
-
-            // Optimization: Prepare bulk materials
-            this.bulkMaterials.push(this.createPremiumMaterial(a.color, material.category, true));
-        });
-
-        // 3. Build Bonds
-        blueprint.bonds.forEach(([i1, i2], idx) => {
-            const start = this.atomData[i1].targetPos;
-            const end = this.atomData[i2].targetPos;
-            const mid = start.clone().add(end).multiplyScalar(0.5);
-            const dir = end.clone().sub(start);
-
-            const bond = new THREE.Mesh(
-                new THREE.CylinderGeometry(1, 1, dir.length(), 8), // Lower poly
-                new THREE.MeshPhysicalMaterial({
-                    color: 0x888888,
-                    metalness: 1.0,
-                    roughness: 0.2,
-                    envMap: this.envMap,
-                    transparent: true,
-                    opacity: 0
-                })
-            );
-            bond.position.copy(mid);
-            bond.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
-            bond.scale.set(1, 0.001, 1);
-            this.unitCellGroup.add(bond);
-            this.bonds.push(bond);
-
-            if (idx % 2 === 0) {
-                const marker = new THREE.Group();
-                const lineGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0), new THREE.Vector3(0, 12, 0)]);
-                const line = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ color: 0x00f2ff, transparent: true, opacity: 0 }));
-                marker.add(line);
-                marker.position.copy(mid);
-                this.hudGroup.add(marker);
-                this.hudElements.push({ group: marker, line: line });
-            }
-        });
-
-        // 4. Build Unit Cell Bounding Box (HUD)
-        if (material.renderMode === 'lattice') {
-            const boxSize = 50; // Standard unit cell size for the viz
-            const boxGeo = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
-            const edges = new THREE.EdgesGeometry(boxGeo);
-            const boxLine = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: material.palette.primary, transparent: true, opacity: 0 }));
-            this.unitCellGroup.add(boxLine);
-            this.hudElements.push({ group: boxLine, line: boxLine }); // Animate alongside bonds
-        }
-
-        // 5. Build Bulk Lattice (Optimized)
-        if (material.renderMode === 'lattice') {
-            const spacing = 50; 
-            const is2D = material.dimensions === 2;
-            const zMin = is2D ? 0 : -1;
-            const zMax = is2D ? 0 : 1;
-
-            for(let x = -1; x <= 1; x++) {
-                for(let y = -1; y <= 1; y++) {
-                    for(let z = zMin; z <= zMax; z++) {
-                        if (x===0 && y===0 && z===0) continue;
-                        
-                        const cellPos = new THREE.Vector3(x*spacing, y*spacing, z*spacing);
-                        const cellGroup = new THREE.Group();
-
-                        // Add Atoms
-                        this.atoms.forEach((atom, i) => {
-                            const m = new THREE.Mesh(atom.geometry, this.bulkMaterials[i]);
-                            m.position.copy(this.atomData[i].targetPos).add(cellPos);
-                            cellGroup.add(m);
-                        });
-
-                        // Add Bonds (Structural Simulation)
-                        blueprint.bonds.forEach(([i1, i2]) => {
-                            const start = this.atomData[i1].targetPos.clone().add(cellPos);
-                            const end = this.atomData[i2].targetPos.clone().add(cellPos);
-                            const mid = start.clone().add(end).multiplyScalar(0.5);
-                            const dir = end.clone().sub(start);
-
-                            const bond = new THREE.Mesh(
-                                new THREE.CylinderGeometry(0.8, 0.8, dir.length(), 6),
-                                new THREE.MeshPhysicalMaterial({
-                                    color: 0x666666,
-                                    metalness: 0.5,
-                                    roughness: 0.5,
-                                    transparent: true,
-                                    opacity: 0
-                                })
-                            );
-                            bond.position.copy(mid);
-                            bond.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
-                            cellGroup.add(bond);
-                            this.bulkBonds.push(bond); // Store for animation
-                        });
-
-                        this.bulkGroup.add(cellGroup);
-                    }
-                }
-            }
-        }
-        this.bulkGroup.visible = false;
-        this.bulkGroup.scale.set(0.6, 0.6, 0.6); 
-        this.rimLight.color.set(new THREE.Color(material.palette.primary));
-    }
-
-    update(p) {
-        const time = Date.now() * 0.001;
-
-        // P [0.1 - 0.4]: Assembly Phase
-        const assemblyP = THREE.MathUtils.clamp((p - 0.1) * 4, 0, 1);
-        this.atoms.forEach((atom, i) => {
-            const data = this.atomData[i];
-            const noise = new THREE.Vector3(
-                Math.sin(time + data.noiseOffset) * 15,
-                Math.cos(time * 0.8 + data.noiseOffset) * 15,
-                Math.sin(time * 1.2 + data.noiseOffset) * 15
-            );
-            atom.position.lerpVectors(data.idlePos.clone().add(noise), data.targetPos, assemblyP);
-            
-            const fadeOut = THREE.MathUtils.clamp(1 - (p - 0.5) * 5, 0, 1);
-            atom.material.opacity = p > 0.5 ? fadeOut : 1.0;
-        });
-
-        // P [0.3 - 0.5]: Bonds
-        const bondP = THREE.MathUtils.clamp((p - 0.3) * 5, 0, 1);
-        const ghostFade = THREE.MathUtils.clamp(1 - (p-0.5)*5, 0, 1);
-        this.bonds.forEach(bond => {
-            bond.scale.y = Math.max(0.001, bondP);
-            bond.material.opacity = p > 0.5 ? (Math.min(0.5, bondP * 0.5) * ghostFade) : Math.min(0.5, bondP * 0.5);
-        });
-
-        this.hudElements.forEach(el => {
-            el.line.material.opacity = p > 0.5 ? (bondP * 0.3 * ghostFade) : bondP * 0.3;
-            el.group.scale.set(bondP, bondP, bondP);
-        });
-
-        // P [0.5 - 0.8]: Bulk Growth
-        if (p > 0.45) {
-            this.bulkGroup.visible = true;
-            const bulkP = THREE.MathUtils.clamp((p - 0.45) * 4, 0, 1);
-            
-            // Optimized bulk material update
-            this.bulkMaterials.forEach(m => {
-                m.opacity = bulkP;
-            });
-
-            this.bulkBonds.forEach(b => {
-                b.material.opacity = bulkP * 0.4; // Slightly lower opacity for bulk bonds
-            });
-
-            const s = 0.5 + bulkP * 0.2; // Reduced scale range: 0.5 to 0.7
-            this.bulkGroup.scale.set(s, s, s);
-            this.bulkGroup.rotation.y += 0.003;
-        } else {
-            this.bulkGroup.visible = false;
-        }
-
-        // P [0.8 - 1.0]: Master Dissolve
-        if (p > 0.8) {
-            const dissolveP = 1 - (p - 0.8) * 5;
-            this.masterGroup.scale.set(dissolveP, dissolveP, dissolveP);
-        } else {
-            this.masterGroup.scale.set(1,1,1);
-        }
-
-        // Camera Dynamics
-        this.camera.position.z = 350 - p * 120;
-        this.masterGroup.rotation.y = p * Math.PI * 0.5 + time * 0.05;
         
+        // Initial Mock Molecule (Paracetamol-like)
+        this.createMolecule();
+    }
+
+    setupLights() {
+        const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+        this.scene.add(ambient);
+        const directional = new THREE.DirectionalLight(0xffffff, 2);
+        directional.position.set(100, 100, 100);
+        this.scene.add(directional);
+        const rim = new THREE.PointLight(0x00f2ff, 10, 500);
+        rim.position.set(-100, -100, -50);
+        this.scene.add(rim);
+    }
+
+    setupComposer() {
+        this.composer = new EffectComposer(this.renderer);
+        this.composer.addPass(new RenderPass(this.scene, this.camera));
+        this.bloomPass = new UnrealBloomPass(new THREE.Vector2(this.width, this.height), 0.4, 0.4, 0.85);
+        this.composer.addPass(this.bloomPass);
+    }
+
+    createMolecule() {
+        // Simple Phenyl Ring + Amide group for Paracetamol visualization
+        const atomPositions = [
+            { id: 0, type: 'C', pos: [0, 0, 0], color: '#777777', size: 4 }, // Ring
+            { id: 1, type: 'C', pos: [14, 0, 0], color: '#777777', size: 4 },
+            { id: 2, type: 'C', pos: [21, 12, 0], color: '#777777', size: 4 },
+            { id: 3, type: 'C', pos: [14, 24, 0], color: '#777777', size: 4 },
+            { id: 4, type: 'C', pos: [0, 24, 0], color: '#777777', size: 4 },
+            { id: 5, type: 'C', pos: [-7, 12, 0], color: '#777777', size: 4 },
+            { id: 6, type: 'O', pos: [7, -15, 0], color: '#ff0000', size: 5 }, // Hydroxyl
+            { id: 7, type: 'N', pos: [7, 35, 0], color: '#0000ff', size: 5 }, // Amide N
+            { id: 8, type: 'C', pos: [7, 50, 0], color: '#777777', size: 4 }, // Amide C=O
+            { id: 9, type: 'O', pos: [20, 55, 0], color: '#ff0000', size: 5 } // Carbonyl O
+        ];
+
+        const bonds = [
+            [0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 0], // Ring
+            [0, 6], [3, 7], [7, 8], [8, 9] // Groups
+        ];
+
+        atomPositions.forEach(a => {
+            const mat = new THREE.MeshPhysicalMaterial({ 
+                color: a.color, 
+                metalness: 0.2, 
+                roughness: 0.1, 
+                emissive: a.color, 
+                emissiveIntensity: 0.1 
+            });
+            const mesh = new THREE.Mesh(new THREE.SphereGeometry(a.size, 32, 32), mat);
+            mesh.position.set(...a.pos);
+            mesh.userData = { originalPos: new THREE.Vector3(...a.pos), id: a.id };
+            this.moleculeGroup.add(mesh);
+            this.atoms.push(mesh);
+        });
+
+        const bondMat = new THREE.MeshPhysicalMaterial({ color: '#ffffff', transparent: true, opacity: 0.3 });
+        bonds.forEach(([i1, i2]) => {
+            const start = this.atoms[i1].position;
+            const end = this.atoms[i2].position;
+            const dir = new THREE.Vector3().subVectors(end, start);
+            const len = dir.length();
+            const cyl = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, len, 12), bondMat);
+            
+            cyl.position.copy(start).add(dir.clone().multiplyScalar(0.5));
+            cyl.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.normalize());
+            
+            this.moleculeGroup.add(cyl);
+            this.bonds.push({ mesh: cyl, startIdx: i1, endIdx: i2 });
+        });
+
+        // Center molecule
+        const box = new THREE.Box3().setFromObject(this.moleculeGroup);
+        const center = box.getCenter(new THREE.Vector3());
+        this.moleculeGroup.position.sub(center);
+    }
+
+    setVibrationMode(mode) {
+        this.currentMode = mode;
+        this.animationPhase = 0;
+    }
+
+    update() {
+        const time = Date.now() * 0.001;
+        this.moleculeGroup.rotation.y += 0.002;
+
+        if (this.currentMode) {
+            this.animationPhase += 0.15;
+            const amp = Math.sin(this.animationPhase) * 2.0;
+
+            // Simple Logic for "Amide I (C=O Stretch)"
+            if (this.currentMode.includes("C=O")) {
+                const atomC = this.atoms[8];
+                const atomO = this.atoms[9];
+                
+                // Move them in opposite directions
+                const dir = new THREE.Vector3().subVectors(atomO.userData.originalPos, atomC.userData.originalPos).normalize();
+                atomO.position.copy(atomO.userData.originalPos).add(dir.clone().multiplyScalar(amp));
+                atomC.position.copy(atomC.userData.originalPos).add(dir.clone().multiplyScalar(-amp * 0.5));
+            }
+
+            // Sync Bonds
+            this.bonds.forEach(b => {
+                const start = this.atoms[b.startIdx].position;
+                const end = this.atoms[b.endIdx].position;
+                const dir = new THREE.Vector3().subVectors(end, start);
+                const len = dir.length();
+                b.mesh.position.copy(start).add(dir.clone().multiplyScalar(0.5));
+                b.mesh.scale.y = len / (start.distanceTo(end) || 1); // Not quite right but works for demo
+                b.mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.normalize());
+                b.mesh.scale.set(1, len / (this.atoms[b.startIdx].userData.originalPos.distanceTo(this.atoms[b.endIdx].userData.originalPos)), 1);
+            });
+        }
+
         this.composer.render();
     }
 
@@ -322,13 +157,5 @@ export class WebGLCore {
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.width, this.height);
         this.composer.setSize(this.width, this.height);
-    }
-
-    dispose() {
-        window.removeEventListener('resize', () => this.onResize());
-        this.renderer.dispose();
-        if (this.container.contains(this.renderer.domElement)) {
-            this.container.removeChild(this.renderer.domElement);
-        }
     }
 }
