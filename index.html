@@ -1,191 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAMAN-LINK // Raman Spectral Assignment</title>
-    <meta name="description"
-        content="An interface for Raman spectral assignment and polymorphic metadata extraction.">
+    <title>Raman Link | Academic Research Station</title>
+    <link rel="stylesheet" href="./src/styles/index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="./src/styles/index.css">
 </head>
-
-<body class="monograph-theme">
+<body class="research-theme">
     <div id="app">
-        <div class="background-grid"></div>
+        <!-- GLOBAL HEADER -->
+        <header class="minimal-header">
+            <div class="brand">RAMAN<span>LINK</span></div>
+            <div class="status-indicator">SYSTEM READY // ACADEMIC MODE</div>
+        </header>
 
-        <!-- SECTION 1: LANDING -->
-        <section id="view-home" class="view-active">
-            <header class="monograph-header">
-                <div class="logo">RAMAN-<span>LINK</span></div>
-                <div class="app-status" style="font-size: 0.65rem; color: var(--text-dim); font-weight: 700; font-family: var(--font-mono);">ANALYSIS_INTERFACE_CORE</div>
-            </header>
-
-            <div class="hero-container">
-                <h1 class="serif-title">Raman Spectral Assignment. <span>Automated.</span></h1>
-                <p class="subtitle">A specialized interface for interpreting Raman data in <strong>Organic APIs and Pharmaceutical Materials</strong>. Correlate raw spectra with molecular structure using the Socrates Standard.</p>
-                
-                <div class="cta-container" style="text-align: left; margin-bottom: 60px;">
-                    <button id="launch-app" class="btn-ai">OPEN INTERFACE &rarr;</button>
-                    <button id="view-methodology-btn" class="btn-secondary" style="margin-left: 20px;">TECHNICAL METHODOLOGY</button>
+        <!-- MAIN TERMINAL VIEW -->
+        <main id="view-main" class="terminal-container">
+            <div class="input-card">
+                <div class="card-header">
+                    <h2>RESEARCH INTERPRETATION</h2>
+                    <p>Enter parameters for full Raman batch analysis.</p>
                 </div>
 
-                <div class="narrative-grid">
-                    <div class="glass-card">
-                        <h3>Organic Scaffolds</h3>
-                        <p>Optimization for organic pharmaceutical scaffolds, including Amides, Aromatics, and complex Heterocyclic structures.</p>
+                <div class="input-grid">
+                    <!-- INPUT 1: MATERIAL SELECTOR -->
+                    <div class="field">
+                        <label>MATERIAL CLASS</label>
+                        <select id="compound-selector">
+                            <option value="paracetamol">Paracetamol (API)</option>
+                            <option value="aspirin">Aspirin (API)</option>
+                            <option value="ibuprofen">Ibuprofen (API)</option>
+                            <option value="metformin">Metformin (API)</option>
+                            <option value="unknown">Custom / Unknown</option>
+                        </select>
                     </div>
-                    <div class="glass-card">
-                        <h3>Polymorphic Metadata</h3>
-                        <p>Instant extraction of polymorphic markers and experimental data from global pharmaceutical research indices.</p>
+
+                    <!-- INPUT 2: BATCH SAMPLE -->
+                    <div class="field">
+                        <label>EXPERIMENTAL BATCH (.csv)</label>
+                        <div class="file-drop" id="drop-sample">
+                            <span id="label-sample">Drag & Drop Sample</span>
+                            <input type="file" id="input-sample" accept=".csv" hidden>
+                        </div>
+                    </div>
+
+                    <!-- INPUT 3: REFERENCE (OPTIONAL) -->
+                    <div class="field">
+                        <label>REFERENCE STANDARD (optional)</label>
+                        <div class="file-drop secondary" id="drop-reference">
+                            <span id="label-reference">Drag & Drop Reference</span>
+                            <input type="file" id="input-reference" accept=".csv" hidden>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-zone">
+                    <button id="btn-interpret" class="btn-primary">INTERPRET SCAN</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- PROCESSING OVERLAY -->
+        <div id="overlay-processing" class="overlay view-hidden">
+            <div class="loader-content">
+                <div class="scanner-line"></div>
+                <h3>ANALYZING SPECTRUM</h3>
+                <p id="processing-status">Peak detection in progress...</p>
+            </div>
+        </div>
+
+        <!-- DOWNLOAD CENTER VIEW -->
+        <div id="view-results" class="results-container view-hidden">
+            <div class="results-header">
+                <button id="btn-back" class="btn-text">← New Analysis</button>
+                <h2>ANALYSIS COMPLETE</h2>
+            </div>
+
+            <div class="results-layout">
+                <div class="plot-preview">
+                    <canvas id="spectrum-canvas"></canvas>
+                </div>
+
+                <div class="download-sidebar">
+                    <div class="artifact-card">
+                        <h3>RESEARCH ARTIFACTS</h3>
+                        <p>High-quality exports for your documentation.</p>
+                        
+                        <div class="download-btns">
+                            <button id="download-data" class="btn-artifact">
+                                <span class="ext">CSV</span>
+                                <span class="name">Technical Data Matrix</span>
+                            </button>
+                            <button id="download-plot" class="btn-artifact">
+                                <span class="ext">PNG</span>
+                                <span class="name">Publication Plot</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="quick-stats">
+                        <div class="stat-row"><span>Peaks Detected</span> <strong id="stat-peaks">0</strong></div>
+                        <div class="stat-row"><span>Confidence Score</span> <strong id="stat-score">0%</strong></div>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- SECTION 2: ANALYZER -->
-        <section id="view-app" class="view-hidden">
-            <header class="app-header">
-                <div class="app-brand" id="go-home">RAMAN-<span>LINK</span></div>
-                <div class="app-status" id="snr-display" style="font-size: 0.7rem; font-weight: 600; color: var(--text-dim);">STATUS: ACTIVE</div>
-            </header>
-
-            <div class="app-container">
-                <div class="spectrum-workspace" id="spectrum-workspace">
-                    <div class="workspace-header">
-                        <div class="meta-pills" id="meta-pills">
-                            <span class="pill">SOURCE: NULL</span>
-                        </div>
-                        <div class="dual-upload-controls">
-                            <div class="upload-trigger" id="upload-reference">LOAD REFERENCE</div>
-                            <div class="upload-trigger" id="upload-sample">LOAD SAMPLE</div>
-                            <input type="file" id="file-input" hidden accept=".csv,.txt">
-                        </div>
-                    </div>
-                    <div class="canvas-wrapper">
-                        <canvas id="raman-chart"></canvas>
-                    </div>
-                </div>
-
-                <div class="resizer-handle" id="resizer-handle">
-                    <div class="handle-line"></div>
-                </div>
-
-                <div class="analysis-dashboard">
-                    <div class="dashboard-col metadata-col">
-                        <div class="box-label">01. COMPOUND_IDENTIFIER</div>
-                        <div class="search-box">
-                            <input type="text" id="compound-search" placeholder="Enter identifier (e.g. Paracetamol)">
-                            <button id="search-btn">SEARCH</button>
-                        </div>
-                        <div class="pubchem-dossier" id="pubchem-dossier">
-                            <p class="placeholder" style="font-size: 0.75rem; color: var(--text-dim);">Awaiting query...</p>
-                        </div>
-                        <button id="add-to-analysis-btn" class="btn-secondary" style="display:none; width:100%; margin-bottom:20px;">
-                            CORRELATE STRUCTURE
-                        </button>
-
-                        <div class="analysis-stats">
-                            <div class="stat">ASSIGNED_PEAKS: <span id="stat-peaks">0</span></div>
-                            <div class="stat">CORRELATION_CONFIDENCE: <span id="stat-match">0%</span></div>
-                        </div>
-                    </div>
-
-                    <div class="dashboard-col assignments-col">
-                        <div class="box-label">02. SPECTRAL_ASSIGNMENTS</div>
-                        <div id="assignments-list" class="assignments-table">
-                            <div class="table-row header">
-                                <span>WAVENUMBER</span>
-                                <span>MODE</span>
-                                <span>FWHM</span>
-                                <span>AREA</span>
-                            </div>
-                            <div class="list-content">
-                                <p class="placeholder" style="font-size: 0.75rem; color: var(--text-dim); padding-top: 20px;">Awaiting data ingestion...</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="dashboard-col evidence-col">
-                        <div class="box-label">03. TECHNICAL_RATIONALE</div>
-                        <div class="evidence-content">
-                            <div id="ev-body">
-                                <p class="placeholder" style="font-size: 0.75rem; color: var(--text-dim);">Select assignment for rationale.</p>
-                            </div>
-                            <div class="citation-block" id="ev-citation"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 3: TECHNICAL METHODOLOGY -->
-        <section id="view-methodology" class="view-hidden">
-            <header class="app-header">
-                <div class="app-brand" id="method-go-home">RAMAN-<span>LINK</span></div>
-                <div style="font-size: 0.6rem; letter-spacing: 2px;">TECHNICAL_METHODOLOGY</div>
-            </header>
-            <div class="method-container">
-                <div class="method-content">
-                    <h1 class="serif-title" style="font-size: 3.5rem;">Technical <span>Methodology.</span></h1>
-                    <p class="subtitle" style="margin-bottom: 80px;">RAMAN-LINK is an interface designed to reduce the manual physical and mental effort involved in spectral interpretation. It provides an automated framework for assignment based on validated physical standards.</p>
-                    
-                    <div class="method-section">
-                        <h3>01. INSTRUMENT AGNOSTICISM</h3>
-                        <p>Our engine utilizes a <span class="detail-link" data-topic="parsing">Universal Heuristic Parser</span> to handle diverse laboratory data formats. It automatically tunnels through metadata headers, detects unit conflicts (nm vs cm⁻¹), and normalizes detector intensity to a 0-1 scale.</p>
-                    </div>
-
-                    <div class="method-section">
-                        <h3>02. METADATA EXTRACTION</h3>
-                        <p>Automation of literature search and reference marker identification. This engine correlates research metadata with raw data to provide initial interpretation markers.</p>
-                    </div>
-
-                    <div class="method-section">
-                        <h3>03. VIBRATIONAL PERTURBATION MODEL</h3>
-                        <p>Calculation of energy shifts between molecular states and solid-state environments using established physical laws (Hydrogen Bonding, Steric Strain).</p>
-                    </div>
-
-                    <div class="method-section">
-                        <h3>04. STANDARDIZED DATA PROCESSING</h3>
-                        <p>A deterministic mathematical sequence for signal preparation: Modified Z-Score despiking, 5th-order polynomial baseline correction, and Savitzky-Golay smoothing.</p>
-                    </div>
-
-                    <div class="method-section">
-                        <h3>05. THE SOCRATES STANDARD</h3>
-                        <p>Structural correlation grounded in the <span class="detail-link" data-topic="socrates">Socrates Standard</span>—the characteristic group frequency tables of George Socrates. This enables evidence-based assignments backed by peer-reviewed spectroscopic truth.</p>
-                    </div>
-
-                    <div class="method-section">
-                        <h3>06. THE MISSION: COGNITIVE REDUCTION</h3>
-                        <p>The system is designed to automate the foundational 10-20% of manual data preparation and initial assignment, allowing the researcher to focus on higher-level analysis.</p>
-                    </div>
-
-                    <button class="btn-ai" id="method-to-app" style="margin-top: 40px;">OPEN INTERFACE</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 4: DEEP DIVE DETAILS -->
-        <section id="view-detail" class="view-hidden">
-            <header class="app-header">
-                <div class="app-brand" id="detail-go-home">RAMAN-<span>LINK</span></div>
-                <div style="font-size: 0.6rem; letter-spacing: 2px;" id="detail-topic-label">TECHNICAL_DEEP_DIVE</div>
-            </header>
-            <div class="method-container">
-                <div class="method-content" id="detail-content">
-                    <!-- Dynamic Content Injected Here -->
-                </div>
-                <button class="btn-secondary" id="detail-back-to-protocol" style="margin-top: 40px;">&larr; BACK TO METHODOLOGY</button>
-            </div>
-        </section>
+        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SCRIPTS -->
     <script type="module" src="./src/main.js"></script>
 </body>
 </html>
